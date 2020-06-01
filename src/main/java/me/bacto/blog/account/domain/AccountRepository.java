@@ -1,6 +1,5 @@
 package me.bacto.blog.account.domain;
 
-import me.bacto.blog.account.domain.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

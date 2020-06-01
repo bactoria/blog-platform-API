@@ -12,9 +12,7 @@ import java.io.Serializable;
 @ToString
 @NoArgsConstructor
 @EqualsAndHashCode(of = "accountId")
-public class Account implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

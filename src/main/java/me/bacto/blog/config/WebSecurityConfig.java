@@ -36,11 +36,11 @@ import java.util.List;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String LOGIN_ENTRY_POINT = "/login";
+    private static final String SIGNUP_ENTRY_POINT = "/signup";
     private static final String TOKEN_ENTRY_POINT = "/token";
     private static final String ERROR_ENTRY_POINT = "/error";
     private static final String POST_ENTRY_POINT = "/post/**";
     private static final String USER_ENTRY_POINT = "/user/**";
-    private static final String ROOT_ENTRY_POINT = "/**";
     private static final String[] SWAGGER_ENTRY_POINTS = {"/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/api-docs/**"};
 
     private final ObjectMapper objectMapper;
@@ -80,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SkipRequestMatcher jwtAuthenticationMatcher() {
         MatchConditions matchConditions = new MatchConditions();
         matchConditions.add(POST_ENTRY_POINT, HttpMethod.GET);
+        matchConditions.add(SIGNUP_ENTRY_POINT, HttpMethod.POST);
         matchConditions.add(LOGIN_ENTRY_POINT);
         matchConditions.add(TOKEN_ENTRY_POINT);
         matchConditions.add(ERROR_ENTRY_POINT);
@@ -103,13 +104,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .accessDecisionManager(accessDecisionManager())
                 .antMatchers(TOKEN_ENTRY_POINT).permitAll()
-                .antMatchers(LOGIN_ENTRY_POINT).permitAll()
                 .antMatchers(ERROR_ENTRY_POINT).permitAll()
-                .antMatchers(ROOT_ENTRY_POINT).permitAll()
+                .antMatchers(HttpMethod.POST, SIGNUP_ENTRY_POINT).anonymous()
+                .antMatchers(HttpMethod.GET, LOGIN_ENTRY_POINT).anonymous()
                 .antMatchers(HttpMethod.GET, POST_ENTRY_POINT).permitAll()
-                    .antMatchers(POST_ENTRY_POINT).hasRole(AccountRole.USER.getRoleValue())
+                    .antMatchers(POST_ENTRY_POINT).permitAll()
                 .antMatchers(USER_ENTRY_POINT).hasRole(AccountRole.USER.getRoleValue())
-
                 .anyRequest().permitAll();
 
     }

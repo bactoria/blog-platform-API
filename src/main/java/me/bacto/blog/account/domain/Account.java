@@ -5,13 +5,16 @@ import me.bacto.blog.account.usecase.dto.AccountSaveRequestDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @ToString
 @NoArgsConstructor
 @EqualsAndHashCode(of = "accountId")
-public class Account {
+public class Account implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +30,12 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private AccountRole role;
 
-    public static Account join(AccountSaveRequestDto requestDto, PasswordEncoder passwordEncoder) {
-        String s = "asd";
+    public static Account create(AccountSaveRequestDto requestDto, PasswordEncoder passwordEncoder) {
         Account account = new Account();
         account.accountAppId = requestDto.getUserId();
         account.password = passwordEncoder.encode(requestDto.getPassword());
         account.username = requestDto.getUsername();
-        account.role = AccountRole.ADMIN;
+        account.role = AccountRole.USER;
         return account;
     }
 

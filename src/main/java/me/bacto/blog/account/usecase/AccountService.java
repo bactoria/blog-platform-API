@@ -17,8 +17,8 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void createAccount(AccountSaveRequestDto accountSaveRequestDto) {
-        Account account = Account.join(accountSaveRequestDto, passwordEncoder);
+    public void signUp(AccountSaveRequestDto accountSaveRequestDto) {
+        Account account = Account.create(accountSaveRequestDto, passwordEncoder);
         accountRepository.save(account);
     }
 

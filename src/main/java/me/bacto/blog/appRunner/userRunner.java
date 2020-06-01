@@ -24,7 +24,7 @@ public class userRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         AccountSaveRequestDto requestDto = new AccountSaveRequestDto("aaaa", "bbbb", "cccc");
-        accountService.createAccount(requestDto);
+        accountService.signUp(requestDto);
 
         Account writer = accountRepository.findById(1L)
                 .orElseThrow();

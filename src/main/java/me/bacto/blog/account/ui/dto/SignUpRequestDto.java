@@ -1,15 +1,11 @@
-package me.bacto.blog.account.usecase.dto;
+package me.bacto.blog.account.ui.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class AccountSaveRequestDto {
+public class SignUpRequestDto {
     private String userId;
     private String password;
     private String username;

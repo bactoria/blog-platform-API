@@ -27,7 +27,7 @@ public class AjaxAccountDetailsService implements UserDetailsService {
     }
 
     private UserDetails accountDetails(Account account) {
-        final String USERNAME = account.getAccountAppId();
+        final String USERNAME = String.valueOf(account.getAccountId());
         final String PASSWORD = account.getPassword();
 
         return AccountDetails.builder()

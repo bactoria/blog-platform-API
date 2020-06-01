@@ -31,7 +31,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String LOGIN_ENTRY_POINT = "/login";
     private static final String TOKEN_ENTRY_POINT = "/token";
     private static final String ERROR_ENTRY_POINT = "/error";
+    private static final String POST_ENTRY_POINT = "/post/**";
+    private static final String USER_ENTRY_POINT = "/user/**";
     private static final String ROOT_ENTRY_POINT = "/**";
+    private static final String AUTH_ENTRY_POINT = "/auth";
     private static final String[] SWAGGER_ENTRY_POINTS = {"/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/api-docs/**"};
 
     private final ObjectMapper objectMapper;
@@ -47,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AjaxAuthenticationFilter ajaxAuthenticationFilter() throws Exception {
-        AjaxAuthenticationFilter filter = new AjaxAuthenticationFilter(antPathRequestMatcher(), objectMapper);
+        AjaxAuthenticationFilter filter = new AjaxAuthenticationFilter(ajaxAuthenticationMatcher(), objectMapper);
         filter.setAuthenticationManager(authenticationManager());
         filter.setAuthenticationSuccessHandler(securityHandler);
         filter.setAuthenticationFailureHandler(securityHandler);
@@ -55,22 +58,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AntPathRequestMatcher antPathRequestMatcher() {
+    public AntPathRequestMatcher ajaxAuthenticationMatcher() {
         return new AntPathRequestMatcher(LOGIN_ENTRY_POINT, HttpMethod.POST.name());
     }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(skipPathRequestMatcher());
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtAuthenticationMatcher());
         filter.setAuthenticationManager(authenticationManager());
         filter.setAuthenticationFailureHandler(securityHandler);
         return filter;
     }
 
     @Bean
-    public SkipPathRequestMatcher skipPathRequestMatcher() {
+    public SkipPathRequestMatcher jwtAuthenticationMatcher() {
         List<String> skipUrls = new ArrayList<>();
         skipUrls.addAll(Arrays.asList(LOGIN_ENTRY_POINT, TOKEN_ENTRY_POINT, ERROR_ENTRY_POINT));
+        skipUrls.addAll(Arrays.asList(POST_ENTRY_POINT));
         skipUrls.addAll(Arrays.asList(SWAGGER_ENTRY_POINTS));
         return new SkipPathRequestMatcher(skipUrls);
     }
@@ -94,6 +98,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(LOGIN_ENTRY_POINT).permitAll()
                 .antMatchers(ERROR_ENTRY_POINT).permitAll()
                 .antMatchers(ROOT_ENTRY_POINT).permitAll()
+                .antMatchers(POST_ENTRY_POINT).permitAll()
+                .antMatchers(USER_ENTRY_POINT).authenticated()
+                .antMatchers(AUTH_ENTRY_POINT).authenticated()
+
                 .anyRequest().permitAll();
 
     }

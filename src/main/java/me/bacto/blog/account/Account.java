@@ -5,10 +5,7 @@ import me.bacto.blog.account.usecase.dto.AccountSaveRequestDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -21,6 +18,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountId;
 
+    @Column(unique = true)
     private String accountAppId;
 
     private String password;
@@ -30,12 +28,13 @@ public class Account {
     private String roles;
 
     public static Account join(AccountSaveRequestDto requestDto, PasswordEncoder passwordEncoder) {
-        Account a = new Account();
-        a.accountAppId = requestDto.getUserId();
-        a.password = passwordEncoder.encode(requestDto.getPassword());
-        a.username = requestDto.getUsername();
-        a.roles = "ADMIN";
-        return a;
+        String s = "asd";
+        Account account = new Account();
+        account.accountAppId = requestDto.getUserId();
+        account.password = passwordEncoder.encode(requestDto.getPassword());
+        account.username = requestDto.getUsername();
+        account.roles = "ADMIN";
+        return account;
     }
 
 }

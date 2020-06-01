@@ -7,6 +7,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import me.bacto.blog.auth.ajax.AccountDetails;
 import me.bacto.blog.config.JwtConfig;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,9 +21,11 @@ public abstract class JwtUtil {
 
     private static String createToken(UserDetails userDetails, Date date) {
         try {
+
             return JWT.create()
                     .withIssuer(JwtConfig.ISSUER)
                     .withClaim("id", userDetails.getUsername())
+//                    .withClaim("accountId", accountDetails.getAccountId())
                     .withClaim("role", userDetails.getAuthorities().toArray()[0].toString())
                     .withExpiresAt(date)
                     .sign(JwtConfig.getAlgorithm());

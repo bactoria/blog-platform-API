@@ -1,14 +1,13 @@
 package me.bacto.blog.post.command.usecase;
 
 import lombok.RequiredArgsConstructor;
-import me.bacto.blog.account.AccountRepository;
+import me.bacto.blog.account.domain.AccountRepository;
 import me.bacto.blog.post.command.domain.Post;
 import me.bacto.blog.post.command.domain.PostRepository;
 import me.bacto.blog.post.command.domain.dto.CreatePostDto;
 import me.bacto.blog.post.command.usecase.dto.PostSaveRequestDto;
 import me.bacto.blog.post.command.usecase.dto.PostUpdateRequestDto;
 import me.bacto.blog.post.command.usecase.dto.PostUpdateResponseDto;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

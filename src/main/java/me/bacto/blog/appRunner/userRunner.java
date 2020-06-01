@@ -1,8 +1,8 @@
 package me.bacto.blog.appRunner;
 
 import lombok.RequiredArgsConstructor;
-import me.bacto.blog.account.Account;
-import me.bacto.blog.account.AccountRepository;
+import me.bacto.blog.account.domain.Account;
+import me.bacto.blog.account.domain.AccountRepository;
 import me.bacto.blog.account.usecase.AccountService;
 import me.bacto.blog.account.usecase.dto.AccountSaveRequestDto;
 import me.bacto.blog.post.command.domain.PostRepository;
@@ -10,7 +10,6 @@ import me.bacto.blog.post.command.usecase.PostService;
 import me.bacto.blog.post.command.usecase.dto.PostSaveRequestDto;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component

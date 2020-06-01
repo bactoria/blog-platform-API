@@ -1,8 +1,7 @@
-package me.bacto.blog.account;
+package me.bacto.blog.account.domain;
 
 import lombok.*;
 import me.bacto.blog.account.usecase.dto.AccountSaveRequestDto;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -25,7 +24,8 @@ public class Account {
 
     private String username;
 
-    private String roles;
+    @Enumerated(EnumType.STRING)
+    private AccountRole role;
 
     public static Account join(AccountSaveRequestDto requestDto, PasswordEncoder passwordEncoder) {
         String s = "asd";
@@ -33,7 +33,7 @@ public class Account {
         account.accountAppId = requestDto.getUserId();
         account.password = passwordEncoder.encode(requestDto.getPassword());
         account.username = requestDto.getUsername();
-        account.roles = "ADMIN";
+        account.role = AccountRole.ADMIN;
         return account;
     }
 

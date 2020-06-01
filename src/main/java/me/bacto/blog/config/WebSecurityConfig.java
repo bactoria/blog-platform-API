@@ -2,6 +2,7 @@ package me.bacto.blog.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import me.bacto.blog.account.domain.AccountRole;
 import me.bacto.blog.auth.BaseSecurityHandler;
 import me.bacto.blog.auth.ajax.AjaxAuthenticationProvider;
 import me.bacto.blog.auth.ajax.filter.AjaxAuthenticationFilter;
@@ -10,12 +11,18 @@ import me.bacto.blog.auth.jwt.filter.JwtAuthenticationFilter;
 import me.bacto.blog.auth.jwt.matcher.SkipPathRequestMatcher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -94,15 +101,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .accessDecisionManager(accessDecisionManager())
                 .antMatchers(TOKEN_ENTRY_POINT).permitAll()
                 .antMatchers(LOGIN_ENTRY_POINT).permitAll()
                 .antMatchers(ERROR_ENTRY_POINT).permitAll()
                 .antMatchers(ROOT_ENTRY_POINT).permitAll()
-                .antMatchers(POST_ENTRY_POINT).permitAll()
-                .antMatchers(USER_ENTRY_POINT).authenticated()
-                .antMatchers(AUTH_ENTRY_POINT).authenticated()
+                .antMatchers(HttpMethod.GET, POST_ENTRY_POINT).permitAll()
+                    .antMatchers(POST_ENTRY_POINT).hasRole(AccountRole.USER.getRoleValue())
+                .antMatchers(USER_ENTRY_POINT).hasRole(AccountRole.USER.getRoleValue())
+                .antMatchers(AUTH_ENTRY_POINT).hasRole(AccountRole.USER.getRoleValue())
 
                 .anyRequest().permitAll();
 
+    }
+
+    private AccessDecisionManager accessDecisionManager() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy(AccountRole.ADMIN.getRoleValue() + " > " + AccountRole.USER.getRoleValue());
+
+        DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
+        handler.setRoleHierarchy(roleHierarchy);
+
+        WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
+        webExpressionVoter.setExpressionHandler(handler);
+        List<AccessDecisionVoter<? extends Object>> voters = Arrays.asList(webExpressionVoter);
+
+        return new AffirmativeBased(voters);
     }
 }

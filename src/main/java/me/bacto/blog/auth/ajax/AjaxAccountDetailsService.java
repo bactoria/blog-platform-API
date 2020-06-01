@@ -1,17 +1,13 @@
 package me.bacto.blog.auth.ajax;
 
 import lombok.RequiredArgsConstructor;
-import me.bacto.blog.account.Account;
-import me.bacto.blog.account.AccountRepository;
+import me.bacto.blog.account.domain.Account;
+import me.bacto.blog.account.domain.AccountRepository;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -31,7 +27,7 @@ public class AjaxAccountDetailsService implements UserDetailsService {
         final String PASSWORD = account.getPassword();
 
         return AccountDetails.builder()
-                .authorities(AuthorityUtils.createAuthorityList(account.getRoles()))
+                .authorities(AuthorityUtils.createAuthorityList(account.getRole().getRoleValue()))
                 .isAccountNonExpired(true)
                 .isAccountNonLocked(true)
                 .isCredentialsNonExpired(true)

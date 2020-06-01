@@ -1,8 +1,8 @@
 package me.bacto.blog.account.usecase;
 
 import lombok.RequiredArgsConstructor;
-import me.bacto.blog.account.Account;
-import me.bacto.blog.account.AccountRepository;
+import me.bacto.blog.account.domain.Account;
+import me.bacto.blog.account.domain.AccountRepository;
 import me.bacto.blog.account.usecase.dto.AccountSaveRequestDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

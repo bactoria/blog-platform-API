@@ -3,7 +3,7 @@ package me.bacto.blog.post.command.usecase.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import me.bacto.blog.account.Account;
+import me.bacto.blog.account.domain.Account;
 
 @Getter
 @Builder

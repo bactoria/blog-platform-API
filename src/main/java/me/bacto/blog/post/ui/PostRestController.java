@@ -1,7 +1,7 @@
 package me.bacto.blog.post.ui;
 
 import lombok.RequiredArgsConstructor;
-import me.bacto.blog.account.Account;
+import me.bacto.blog.account.domain.Account;
 import me.bacto.blog.account.usecase.AccountService;
 import me.bacto.blog.post.command.usecase.PostService;
 import me.bacto.blog.post.command.usecase.dto.PostSaveRequestDto;

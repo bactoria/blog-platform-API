@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import me.bacto.blog.account.Account;
+import me.bacto.blog.account.domain.Account;
 import me.bacto.blog.post.command.domain.dto.CreatePostDto;
 
 import javax.persistence.*;

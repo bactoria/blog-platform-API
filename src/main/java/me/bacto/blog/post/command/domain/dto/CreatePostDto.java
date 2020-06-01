@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.bacto.blog.account.Account;
+import me.bacto.blog.account.domain.Account;
 
 @Getter
 @Builder @AllArgsConstructor

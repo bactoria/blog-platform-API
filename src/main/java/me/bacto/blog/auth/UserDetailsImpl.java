@@ -1,6 +1,6 @@
 package me.bacto.blog.auth;
 
-import me.bacto.blog.account.Account;
+import me.bacto.blog.account.domain.Account;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 

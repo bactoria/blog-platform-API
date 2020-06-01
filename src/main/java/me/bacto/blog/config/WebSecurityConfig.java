@@ -8,7 +8,8 @@ import me.bacto.blog.auth.ajax.AjaxAuthenticationProvider;
 import me.bacto.blog.auth.ajax.filter.AjaxAuthenticationFilter;
 import me.bacto.blog.auth.jwt.JwtAuthenticationProvider;
 import me.bacto.blog.auth.jwt.filter.JwtAuthenticationFilter;
-import me.bacto.blog.auth.jwt.matcher.SkipPathRequestMatcher;
+import me.bacto.blog.auth.jwt.matcher.SkipRequestMatcher;
+import me.bacto.blog.auth.jwt.matcher.MatchConditions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDecisionManager;
@@ -27,7 +28,6 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,7 +41,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String POST_ENTRY_POINT = "/post/**";
     private static final String USER_ENTRY_POINT = "/user/**";
     private static final String ROOT_ENTRY_POINT = "/**";
-    private static final String AUTH_ENTRY_POINT = "/auth";
     private static final String[] SWAGGER_ENTRY_POINTS = {"/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/api-docs/**"};
 
     private final ObjectMapper objectMapper;
@@ -78,12 +77,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public SkipPathRequestMatcher jwtAuthenticationMatcher() {
-        List<String> skipUrls = new ArrayList<>();
-        skipUrls.addAll(Arrays.asList(LOGIN_ENTRY_POINT, TOKEN_ENTRY_POINT, ERROR_ENTRY_POINT));
-        skipUrls.addAll(Arrays.asList(POST_ENTRY_POINT));
-        skipUrls.addAll(Arrays.asList(SWAGGER_ENTRY_POINTS));
-        return new SkipPathRequestMatcher(skipUrls);
+    public SkipRequestMatcher jwtAuthenticationMatcher() {
+        MatchConditions matchConditions = new MatchConditions();
+        matchConditions.add(POST_ENTRY_POINT, HttpMethod.GET);
+        matchConditions.add(LOGIN_ENTRY_POINT);
+        matchConditions.add(TOKEN_ENTRY_POINT);
+        matchConditions.add(ERROR_ENTRY_POINT);
+        return new SkipRequestMatcher(matchConditions);
     }
 
     @Override
@@ -109,7 +109,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, POST_ENTRY_POINT).permitAll()
                     .antMatchers(POST_ENTRY_POINT).hasRole(AccountRole.USER.getRoleValue())
                 .antMatchers(USER_ENTRY_POINT).hasRole(AccountRole.USER.getRoleValue())
-                .antMatchers(AUTH_ENTRY_POINT).hasRole(AccountRole.USER.getRoleValue())
 
                 .anyRequest().permitAll();
 

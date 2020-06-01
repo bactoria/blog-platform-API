@@ -19,6 +19,7 @@ import java.net.URI;
 import java.security.Principal;
 
 @RestController
+@RequestMapping("/post")
 @RequiredArgsConstructor
 public class PostRestController {
 
@@ -26,7 +27,7 @@ public class PostRestController {
     private final AccountService accountService;
     private final PostDetailService postDetailService;
 
-    @PostMapping("/auth/post")
+    @PostMapping
     public ResponseEntity addPost(@RequestBody AddPostRequestDto requestDto, Principal principal) {
         Account writer = accountService.getAccount(Long.valueOf(principal.getName()));
 
@@ -46,13 +47,19 @@ public class PostRestController {
         return ResponseEntity.created(uri).build();
     }
 
-    @DeleteMapping("/auth/post/{postId}")
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostDetailResponse> fetchPost(@PathVariable Long postId) {
+        PostDetailResponse body = postDetailService.fetchPost(postId);
+        return ResponseEntity.ok(body);
+    }
+
+    @DeleteMapping("/{postId}")
     public ResponseEntity removePost(@PathVariable Long postId) {
         postService.removePost(postId);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/auth/post/{postId}")
+    @PutMapping("/{postId}")
     public ResponseEntity updatePost(@PathVariable Long postId, @RequestBody UpdatePostRequestDto updatePostRequestDto) {
         PostUpdateRequestDto postUpdateRequestDto = PostUpdateRequestDto.builder()
                 .postId(postId)
@@ -61,12 +68,6 @@ public class PostRestController {
                 .build();
 
         PostUpdateResponseDto body = postService.updatePost(postUpdateRequestDto);
-        return ResponseEntity.ok(body);
-    }
-
-    @GetMapping("/post/{postId}")
-    public ResponseEntity<PostDetailResponse> fetchPost(@PathVariable Long postId) {
-        PostDetailResponse body = postDetailService.fetchPost(postId);
         return ResponseEntity.ok(body);
     }
 

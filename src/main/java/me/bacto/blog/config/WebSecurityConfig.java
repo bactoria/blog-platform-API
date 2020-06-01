@@ -84,6 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         matchConditions.add(LOGIN_ENTRY_POINT);
         matchConditions.add(TOKEN_ENTRY_POINT);
         matchConditions.add(ERROR_ENTRY_POINT);
+        matchConditions.addAll(SWAGGER_ENTRY_POINTS);
         return new SkipRequestMatcher(matchConditions);
     }
 

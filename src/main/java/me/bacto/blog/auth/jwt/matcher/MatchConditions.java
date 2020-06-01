@@ -20,6 +20,12 @@ public class MatchConditions {
         conditions.add(MatchCondition.of(path));
     }
 
+    public void addAll(String... paths) {
+        for(String path : paths) {
+            conditions.add(MatchCondition.of(path));
+        }
+    }
+
     public void add(String path, HttpMethod method) {
         conditions.add(MatchCondition.of(path, method));
     }

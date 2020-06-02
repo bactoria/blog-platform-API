@@ -12,13 +12,14 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.IntStream;
+
 @Component
 @RequiredArgsConstructor
 public class userRunner implements ApplicationRunner {
 
     private final AccountService accountService;
     private final AccountRepository accountRepository;
-    private final PostRepository postRepository;
     private final PostService postService;
 
     @Override
@@ -28,11 +29,14 @@ public class userRunner implements ApplicationRunner {
 
         Account writer = accountRepository.findById(1L)
                 .orElseThrow();
-        PostSaveRequestDto requestDto1 = PostSaveRequestDto.builder()
-                .title("앱러너 제목")
-                .content("앱러너 내용")
-                .writer(writer)
-                .build();
-        postService.addPost(requestDto1);
+
+        IntStream.rangeClosed(1, 20).forEach(x ->
+                postService.addPost(PostSaveRequestDto.builder()
+                        .title("앱러너 제목 " + x)
+                        .content("앱러너 내용 " + x)
+                        .writer(writer)
+                        .build()
+                )
+        );
     }
 }

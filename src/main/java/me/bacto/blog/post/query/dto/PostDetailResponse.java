@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Getter
 @ToString
 @NoArgsConstructor
@@ -16,4 +18,6 @@ public class PostDetailResponse {
     private String writerId;
     private String writerImageUrl;
     private String writerUsername;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 }

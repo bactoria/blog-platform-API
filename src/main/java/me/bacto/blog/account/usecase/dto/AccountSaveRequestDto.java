@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccountSaveRequestDto {
     private String userId;
+    private String imageUrl;
     private String password;
     private String username;
 }

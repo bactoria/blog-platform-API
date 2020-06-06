@@ -21,6 +21,8 @@ public class Account {
     @Column(unique = true)
     private String accountAppId;
 
+    private String imageUrl;
+
     private String password;
 
     private String username;
@@ -31,6 +33,7 @@ public class Account {
     public static Account create(AccountSaveRequestDto requestDto, PasswordEncoder passwordEncoder) {
         Account account = new Account();
         account.accountAppId = requestDto.getUserId();
+        account.imageUrl = requestDto.getImageUrl();
         account.password = passwordEncoder.encode(requestDto.getPassword());
         account.username = requestDto.getUsername();
         account.role = AccountRole.USER;

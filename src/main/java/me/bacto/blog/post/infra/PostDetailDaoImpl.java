@@ -20,7 +20,7 @@ public class PostDetailDaoImpl implements PostDetailDao {
     @Override
     public Optional<PostDetailResponse> fetchDetail(Long postId) {
         var selectQuery =
-                "select NEW "+DTO_PATH+"PostDetailResponse(p.postId, p.title, p.content, a.accountAppId, a.username)" +
+                "select NEW "+DTO_PATH+"PostDetailResponse(p.postId, p.title, p.content, a.accountAppId, a.imageUrl, a.username)" +
                 " from Post p inner join Account a on p.writer.accountId=a.accountId " +
                 " where p.postId = :postId";
         ;

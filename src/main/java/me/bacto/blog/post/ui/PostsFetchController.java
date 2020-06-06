@@ -10,7 +10,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/post")
@@ -25,6 +28,11 @@ public class PostsFetchController {
     public ResponseEntity<Page<PostPageResponse>> fetchPost(@PageableDefault(sort = "postId", direction = Sort.Direction.DESC, size = PAGE_SIZE) Pageable pageable) {
         Page<PostPageResponse> body = postPageService.fetchPost(pageable);
         return ResponseEntity.ok().body(body);
+    }
+
+    @GetMapping("/test")
+    public void qaa(@RequestParam String[] a, @RequestParam String b) {
+        return;
     }
 
 }

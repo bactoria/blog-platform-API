@@ -14,5 +14,6 @@ public class PostDetailResponse {
     private String title;
     private String content;
     private String writerId;
+    private String writerImageUrl;
     private String writerUsername;
 }

@@ -6,14 +6,19 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import me.bacto.blog.account.domain.Account;
 import me.bacto.blog.post.command.domain.dto.CreatePostDto;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(of = "postId")
 @Getter
 @ToString
+@EntityListeners(AuditingEntityListener.class)
 public class Post {
 
     @Id
@@ -30,6 +35,12 @@ public class Post {
 
     @Column(nullable=false, columnDefinition = "boolean default false")
     private boolean isDeleted;
+
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    private LocalDateTime modifiedDate;
 
     public static Post of(CreatePostDto createPostDto) {
         Post newPost = new Post();
